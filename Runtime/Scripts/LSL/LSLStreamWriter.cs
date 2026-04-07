@@ -10,7 +10,6 @@ namespace BCIEssentials.LSLFramework
         public string StreamName = "UnityMarkerStream";
         public string StreamType = "BCI_Essentials_Markers";
         public bool PrintLogs = false;
-        public bool EnableStream = true;
 
         public bool HasConsumers => _outlet?.have_consumers() ?? false;
         public bool HasLiveOutlet => _outlet is not null;
@@ -19,7 +18,7 @@ namespace BCIEssentials.LSLFramework
 
         void Start()
         {
-            if (EnableStream && !HasLiveOutlet)
+            if (!HasLiveOutlet)
                 OpenStream();
         }
 
@@ -57,7 +56,7 @@ namespace BCIEssentials.LSLFramework
 
         public void PushString(string s)
         {
-            if (!EnableStream) return;
+            if (!enabled) return;
 
             if (HasLiveOutlet || OpenStream())
             {
