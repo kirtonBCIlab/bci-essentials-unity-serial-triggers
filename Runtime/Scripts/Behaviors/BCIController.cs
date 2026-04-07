@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace BCIEssentials.Behaviours
 {
-    using Trials;
     using Training;
+    using Trials;
 
     public class BCIController : CommunicationProvider
     {
