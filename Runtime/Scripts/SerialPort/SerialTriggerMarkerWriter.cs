@@ -63,14 +63,6 @@ namespace BCIEssentials.SerialTriggers
             _ => UnresolvedByte
         };
 
-        protected virtual byte ResolveEventMarkerTriggerCode(EventMarker marker)
-        => marker switch
-        {
-            P300EventMarker p300Marker => ResolveP300MarkerTriggerCode(p300Marker),
-            { TrainingTargetIndex: >= 0 } => (byte)(marker.TrainingTargetIndex + 1),
-            _ => 0
-        };
-
-        protected abstract byte ResolveP300MarkerTriggerCode(P300EventMarker marker);
+        protected abstract byte ResolveEventMarkerTriggerCode(EventMarker marker);
     }
 }
