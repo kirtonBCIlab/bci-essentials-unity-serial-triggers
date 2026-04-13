@@ -1,0 +1,7 @@
+{
+    "name": "Bci4Kids.BciEssentials.SerialTriggers",
+    "rootNamespace": "BCIEssentials.SerialTriggers",
+    "references": [
+        "Bci4Kids.BciEssentials.LSLFramework"
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Bci4Kids.BciEssentials.SerialTriggers.Editor",
+    "rootNamespace": "BCIEssentials.SerialTriggers.Editor",
+    "references": [
+        "Bci4Kids.BciEssentials.SerialTriggers",
+        "Bci4Kids.BciEssentials.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ]
+}
