@@ -5,7 +5,7 @@ namespace BCIEssentials.SerialTriggers.Editor
 {
     using BCIEssentials.Editor;
 
-    [CustomEditor(typeof(SerialTriggerMarkerWriter))]
+    [CustomEditor(typeof(SerialTriggerMarkerWriter), true)]
     public class SerialMarkerWriterEditor : ExtendedAttributeInspector
     {
         private string[] _cachedPortDescriptions;

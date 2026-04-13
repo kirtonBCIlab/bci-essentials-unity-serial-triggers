@@ -1,15 +1,13 @@
 using System.IO.Ports;
-using System.Linq;
 using UnityEngine;
 
 namespace BCIEssentials.SerialTriggers
 {
     using LSLFramework;
 
-    public class SerialTriggerMarkerWriter : MarkerWriter
+    public abstract class SerialTriggerMarkerWriter : MarkerWriter
     {
         public const byte UnresolvedByte = 0xff;
-        public enum P300TriggerResolutionMode { MatchesTarget, StimulusIndex }
 
         [Header("Serial Port Configuration")]
         [Tooltip("Serial port name (e.g. COM3 on Windows, /dev/ttyUSB0 on Linux)")]
@@ -17,9 +15,6 @@ namespace BCIEssentials.SerialTriggers
 
         [Tooltip("Milliseconds to hold the trigger value before resetting to 0")]
         public int PulseWidth = 10;
-
-        [Tooltip("Trigger code resolution behaviour for p300 markers")]
-        public P300TriggerResolutionMode triggerResolutionMode;
 
         [Header("Advanced Port Settings")]
         [SerializeField] private int _writeTimeout = 500;
@@ -48,7 +43,7 @@ namespace BCIEssentials.SerialTriggers
         }
 
 
-        protected virtual byte ResolveTriggerCode(IMarker marker)
+        public virtual byte ResolveTriggerCode(IMarker marker)
         => marker switch
         {
             IStatusMarker statusMarker => ResolveStatusMarkerTriggerCode(statusMarker),
@@ -64,6 +59,7 @@ namespace BCIEssentials.SerialTriggers
             TrainingCompleteMarker => 0xf2,
             TrainClassifierMarker => 0xf3,
             UpdateClassifierMarker => 0xf4,
+            DoneWithRestingStateCollectionMarker => 0xf5,
             _ => UnresolvedByte
         };
 
@@ -75,40 +71,6 @@ namespace BCIEssentials.SerialTriggers
             _ => 0
         };
 
-        protected virtual byte ResolveP300MarkerTriggerCode(P300EventMarker marker)
-        {
-            if (marker is SingleFlashP300EventMarker singleFlashMarker)
-            {
-                return triggerResolutionMode switch
-                {
-                    P300TriggerResolutionMode.StimulusIndex => (byte)singleFlashMarker.StimulusIndex,
-                    _ => (byte)(singleFlashMarker.StimulusIndex == marker.TrainingTargetIndex ? 1 : 0)
-                };
-            }
-            else if (marker is MultiFlashP300EventMarker multiFlashMarker)
-            {
-                if (triggerResolutionMode == P300TriggerResolutionMode.MatchesTarget)
-                {
-                    return (byte)(multiFlashMarker.StimulusIndices.Contains(marker.TrainingTargetIndex) ? 1 : 0);
-                }
-                else
-                {
-                    if (marker.ClassCount > 7)
-                    {
-                        Debug.LogWarning(
-                            "Cannot meaningfully represent more than " +
-                            "7 concurrent targets in a single byte"
-                        );
-                    }
-                    byte stimulusFlags = 0;
-                    foreach (int stimulusIndex in multiFlashMarker.StimulusIndices)
-                    {
-                        if (stimulusIndex < 8) stimulusFlags |= (byte)(1 << stimulusIndex);
-                    }
-                    return stimulusFlags;
-                }
-            }
-            return UnresolvedByte;
-        }
+        protected abstract byte ResolveP300MarkerTriggerCode(P300EventMarker marker);
     }
 }
