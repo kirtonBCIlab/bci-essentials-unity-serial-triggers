@@ -7,7 +7,6 @@ namespace BCIEssentials.SerialTriggers
 {
     public class SerialPortPulseWriter : SerialPortWriter
     {
-        [Tooltip("Milliseconds to hold the trigger value before resetting to 0")]
         public int PulseWidth;
 
         protected bool WriterThreadExistsAndIsAlive => _writerThread?.IsAlive == true;
@@ -15,6 +14,8 @@ namespace BCIEssentials.SerialTriggers
         private BlockingCollection<byte> _pulseQueue;
         private Thread _writerThread;
 
+
+        ~SerialPortPulseWriter() => Disconnect();
 
         public void SendPulse(byte value)
         {
@@ -25,6 +26,7 @@ namespace BCIEssentials.SerialTriggers
                 WritePulse(value, PulseWidth);
             }
         }
+
 
         protected override void SetUp() => StartWriterThread();
         protected override void CleanUp() => StopWriterThread();
