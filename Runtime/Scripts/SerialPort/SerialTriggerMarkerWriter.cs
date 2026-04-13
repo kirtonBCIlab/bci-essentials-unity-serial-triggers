@@ -23,7 +23,7 @@ namespace BCIEssentials.SerialTriggers
         [SerializeField] private int _dataBits = 8;
         [SerializeField] private StopBits _stopBits = StopBits.One;
 
-        private SerialPortPulseWriter _writer;
+        protected SerialPortPulseWriter _writer;
 
 
         public override void PushMarker(IMarker marker)

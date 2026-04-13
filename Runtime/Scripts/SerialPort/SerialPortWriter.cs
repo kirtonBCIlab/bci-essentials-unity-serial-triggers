@@ -82,7 +82,7 @@ namespace BCIEssentials.SerialTriggers
         }
 
 
-        public void SendByte(byte value)
+        public virtual void SendByte(byte value)
         {
             if (!IsConnected)
             {
