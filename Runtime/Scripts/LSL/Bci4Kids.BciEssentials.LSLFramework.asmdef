@@ -1,7 +1,0 @@
-{
-    "name": "Bci4Kids.BciEssentials.LSLFramework",
-    "rootNamespace": "BciEssentials.LSLFramework",
-    "references": [
-        "labstreaminglayer.LSL4Unity.Runtime"
-    ]
-}

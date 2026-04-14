@@ -1,0 +1,16 @@
+{
+    "name": "Bci4Kids.BciEssentials.SerialTriggers.Tests",
+    "rootNamespace": "BciEssentials.SerialTriggers.Tests",
+    "references": [
+        "Bci4Kids.BciEssentials",
+        "Bci4Kids.BciEssentials.LSLFramework",
+        "Bci4Kids.BciEssentials.SerialTriggers"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": false
+}
