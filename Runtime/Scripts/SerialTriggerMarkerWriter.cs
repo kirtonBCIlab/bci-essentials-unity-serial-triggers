@@ -60,8 +60,8 @@ namespace BCIEssentials.SerialTriggers
         protected virtual byte ResolveStatusMarkerTriggerCode(IStatusMarker marker)
         => marker switch
         {
-            TrialStartedMarker => 0xf1,
-            TrialEndsMarker => 0xf0,
+            TrialStartedMarker => 0xf0,
+            TrialEndsMarker => 0xf1,
             TrainingCompleteMarker => 0xf2,
             TrainClassifierMarker => 0xf3,
             UpdateClassifierMarker => 0xf4,

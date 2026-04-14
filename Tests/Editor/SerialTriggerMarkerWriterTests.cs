@@ -29,8 +29,8 @@ namespace BCIEssentials.SerialTriggers.Tests
 
 
         [Test]
-        [TestCase(typeof(TrialStartedMarker), 0xf1)]
-        [TestCase(typeof(TrialEndsMarker), 0xf0)]
+        [TestCase(typeof(TrialStartedMarker), 0xf0)]
+        [TestCase(typeof(TrialEndsMarker), 0xf1)]
         [TestCase(typeof(TrainingCompleteMarker), 0xf2)]
         [TestCase(typeof(TrainClassifierMarker), 0xf3)]
         [TestCase(typeof(UpdateClassifierMarker), 0xf4)]
@@ -51,7 +51,7 @@ namespace BCIEssentials.SerialTriggers.Tests
             _writer.PushMarker(new TrialStartedMarker());
             Thread.Sleep(ExpectedTransmissionDelay);
 
-            Assert.AreEqual(0xf1, _writer.LastByteSent);
+            Assert.AreEqual(0xf0, _writer.LastByteSent);
             Thread.Sleep(TestPulseWidth);
 
             Assert.AreEqual(0, _writer.LastByteSent);
