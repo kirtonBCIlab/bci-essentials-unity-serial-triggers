@@ -59,23 +59,10 @@ namespace BCIEssentials.Tests.SerialTriggers
             Assert.AreEqual(2, _writer.BytesWritten);
         }
 
-        [Test]
-        public void FakeMode_WhenConnected_ThenSendPulseSendsValueThenZero()
-        {
-            _writer.SendPulse(42);
-            Thread.Sleep(ExpectedTransmissionDelay);
-
-            Assert.AreEqual(42, _writer.LastByteSent);
-            Thread.Sleep(TestPulseWidth);
-
-            Assert.AreEqual(0, _writer.LastByteSent);
-            Assert.AreEqual(2, _writer.BytesWritten);
-        }
-
 
         private class DummySerialWriter : SerialPortPulseWriter
         {
-            public byte LastByteSent;
+            public byte LastByteSent = 0xff;
             public int BytesWritten = 0;
 
             public void FakeConnect() => SetUp();
@@ -89,26 +76,15 @@ namespace BCIEssentials.Tests.SerialTriggers
 
         private class DummySerialMarkerWriter : SerialTriggerMarkerWriter
         {
-            public DummySerialWriter FakeConnection => _writer as DummySerialWriter;
+            public DummySerialWriter FakeConnection => _triggerCodeWriter as DummySerialWriter;
             public byte LastByteSent => FakeConnection.LastByteSent;
             public int BytesWritten => FakeConnection.BytesWritten;
 
-            public override void PushMarker(IMarker marker)
+            protected override SerialPortPulseWriter InitializeTriggerCodeWriter()
             {
-                byte resolvedValue = ResolveTriggerCode(marker);
-                SendPulse(resolvedValue);
-            }
-
-            public void SendPulse(byte value)
-            {
-                if (_writer == null)
-                {
-                    _writer = new DummySerialWriter();
-                    FakeConnection.FakeConnect();
-                }
-
-                _writer.PulseWidth = PulseWidth;
-                _writer.SendPulse(value);
+                DummySerialWriter fakeConnection = new();
+                fakeConnection.FakeConnect();
+                return fakeConnection;
             }
 
             protected override byte ResolveEventMarkerTriggerCode(EventMarker marker) => UnresolvedByte;

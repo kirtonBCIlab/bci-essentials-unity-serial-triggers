@@ -7,23 +7,21 @@ namespace BCIEssentials.SerialTriggers
 {
     public class SerialPortPulseWriter : SerialPortWriter
     {
-        public int PulseWidth;
-
         protected bool WriterThreadExistsAndIsAlive => _writerThread?.IsAlive == true;
         private bool PulseQueueIsWritable => _pulseQueue != null && !_pulseQueue.IsAddingCompleted;
-        private BlockingCollection<byte> _pulseQueue;
+        private BlockingCollection<Pulse> _pulseQueue;
         private Thread _writerThread;
 
 
         ~SerialPortPulseWriter() => Disconnect();
 
-        public void SendPulse(byte value)
+        public void QueuePulse(byte value, int pulseWidthMilliseconds)
         {
-            if (PulseQueueIsWritable) _pulseQueue.Add(value);
+            if (PulseQueueIsWritable) _pulseQueue.Add(new(value, pulseWidthMilliseconds));
             else
             {
                 Debug.LogWarning("Pulse queue not available, sending on main thread");
-                WritePulse(value, PulseWidth);
+                WritePulse(value, pulseWidthMilliseconds);
             }
         }
 
@@ -66,9 +64,9 @@ namespace BCIEssentials.SerialTriggers
         {
             try
             {
-                foreach (byte value in _pulseQueue.GetConsumingEnumerable())
+                foreach ((byte value, int width) in _pulseQueue.GetConsumingEnumerable())
                 {
-                    WritePulse(value, PulseWidth);
+                    WritePulse(value, width);
                 }
             }
             catch (OperationCanceledException) { }
@@ -80,6 +78,25 @@ namespace BCIEssentials.SerialTriggers
             SendByte(value);
             if (delayMilliseconds > 0) Thread.Sleep(delayMilliseconds);
             SendByte(0);
+        }
+
+
+        private struct Pulse
+        {
+            public byte Value;
+            public int Width;
+
+            public Pulse(byte value, int width)
+            {
+                Value = value;
+                Width = width;
+            }
+
+            internal readonly void Deconstruct(out byte value, out int width)
+            {
+                value = Value;
+                width = Width;
+            }
         }
     }
 }

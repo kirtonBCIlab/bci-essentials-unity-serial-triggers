@@ -23,23 +23,29 @@ namespace BCIEssentials.SerialTriggers
         [SerializeField] private int _dataBits = 8;
         [SerializeField] private StopBits _stopBits = StopBits.One;
 
-        protected SerialPortPulseWriter _writer;
+        protected SerialPortPulseWriter _triggerCodeWriter;
+
+
+        private void OnDestroy() => _triggerCodeWriter?.Disconnect();
 
 
         public override void PushMarker(IMarker marker)
         {
             base.PushMarker(marker);
 
-            if (_writer == null)
-            {
-                _writer = new();
-                _writer.Connect(PortName, _baudRate, _parity, _dataBits, _stopBits, _writeTimeout);
-            }
-            _writer.PulseWidth = PulseWidth;
-            _writer.PrintLogs = PrintLogs;
+            _triggerCodeWriter ??= InitializeTriggerCodeWriter();
+            _triggerCodeWriter.PrintLogs = PrintLogs;
 
             byte resolvedValue = ResolveTriggerCode(marker);
-            _writer.SendPulse(resolvedValue);
+            _triggerCodeWriter.QueuePulse(resolvedValue, PulseWidth);
+        }
+
+
+        protected virtual SerialPortPulseWriter InitializeTriggerCodeWriter()
+        {
+            SerialPortPulseWriter writer = new();
+            writer.Connect(PortName, _baudRate, _parity, _dataBits, _stopBits, _writeTimeout);
+            return writer;
         }
 
 
