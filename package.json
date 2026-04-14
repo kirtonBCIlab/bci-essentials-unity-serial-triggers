@@ -5,8 +5,7 @@
   "description": "Serial trigger box support for BCI Essentials Unity, enabling the transmission of byte codes to the stim channel of a compatible EEG amplifier alongside data markers.",
   "unity": "6000.3",
   "unityRelease": "9f1",
-  "documentationUrl": "https://docs.bci.games",
-  "changelogUrl": "https://github.com/kirtonBCIlab/bci-essentials-unity/releases",
+  "documentationUrl": "https://github.com/kirtonBCIlab/bci-essentials-unity-serial-triggers",
   "license": "MIT",
   "author": {
     "name": "BCI Games",
