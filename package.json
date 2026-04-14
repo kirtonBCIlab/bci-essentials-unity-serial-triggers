@@ -1,10 +1,10 @@
 {
-  "name": "com.bci4kids.bciessentials",
-  "version": "2.0.1",
-  "displayName": "BCI Essentials",
-  "description": "A set of front end components for streamlined development of BCI applications in Unity",
-  "unity": "2021.3",
-  "unityRelease": "15f1",
+  "name": "com.bci4kids.bciessentialsserialtriggers",
+  "version": "0.0.0",
+  "displayName": "BCI Essentials Serial Triggers",
+  "description": "Serial trigger box support for BCI Essentials Unity, enabling the transmission of byte codes to the stim channel of a compatible EEG amplifier alongside data markers.",
+  "unity": "6000.3",
+  "unityRelease": "9f1",
   "documentationUrl": "https://docs.bci.games",
   "changelogUrl": "https://github.com/kirtonBCIlab/bci-essentials-unity/releases",
   "license": "MIT",
@@ -15,23 +15,7 @@
   },
   "dependencies": {
     "com.unity.shadergraph": "12.1.8",
-    "com.labstreaminglayer.lsl4unity" : "1.16.0"
-  },
-  "samples": [
-    {
-      "displayName": "P300 Grid",
-      "description": "Simple example setup for a P300 paradigm with multiple selectable trial behaviours and a utility script to generate flashing cubes in a grid.",
-      "path": "Samples~/P300 Grid"
-    },
-    {
-      "displayName": "SSVEP Tile Navigation",
-      "description": "A more complex game demonstrating one possible configuration of an SSVEP paradigm. Depends on 2D tilemap and vector graphics packages.",
-      "path": "Samples~/SSVEP Tile Navigation"
-    },
-    {
-      "displayName": "Motor Imagery",
-      "description": "Basic one button game implementing training for and live input from a BCI using Motor Imagery.",
-      "path": "Samples~/Motor Imagery"
-    }
-  ]
+    "com.labstreaminglayer.lsl4unity" : "1.16.0",
+    "com.bci4kids.bciessentials": "2.0.2"
+  }
 }
